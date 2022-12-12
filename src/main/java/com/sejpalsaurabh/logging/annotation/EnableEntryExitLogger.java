@@ -5,6 +5,13 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * This will be used to annotate methods to enable entry and exit logging.
+ *
+ * @see <a href="https://github.com/sejpalsaurabh/logging#usage">EnableEntryExitLogger Usage</a>
+ * @author Saurabh Sejpal
+ * @since 0.0.1
+ */
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface EnableEntryExitLogger {
