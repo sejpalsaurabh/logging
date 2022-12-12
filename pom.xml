@@ -4,17 +4,18 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.sejpalsaurabh</groupId>
     <artifactId>logging</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
     <packaging>jar</packaging>
     <name>Aspect Oriented Logger for Java Applications</name>
-    <description>This library has been created to simplify the Aspect Oriented Logging for e.g.
-        Execution Time Logging, Entry Exit Logging using Annotations.
+    <description>This library has been created to simplify the Aspect Oriented Logging using
+        Annotations. for e.g. Method Execution Time Logging, Method Entry Exit Logging and Argument
+        Logging.
     </description>
 
     <licenses>
         <license>
-            <name>Apache License 2.0</name>
-            <url>https://opensource.org/licenses/Apache-2.0</url>
+            <name>MIT License</name>
+            <url>https://github.com/sejpalsaurabh/logging/blob/main/LICENSE</url>
         </license>
     </licenses>
 
@@ -22,17 +23,32 @@
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <snakeyaml.version>1.33</snakeyaml.version>
-        <spring-boot.version>2.7.5</spring-boot.version>
+        <spring-boot.version>2.7.6</spring-boot.version>
     </properties>
 
     <dependencies>
         <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
+            <exclusions>
+            	<exclusion>
+            		<groupId>org.yaml</groupId>
+            		<artifactId>snakeyaml</artifactId>
+            	</exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
         </dependency>
         <dependency>
             <groupId>org.yaml</groupId>
@@ -93,7 +109,7 @@
     <developers>
         <developer>
             <name>Saurabh Sejpal</name>
-            <email>sejpalsaurabh88@gmail.com</email>
+            <email>github@sejpalsaurabh.anonaddy.me</email>
             <organization>https://in.linkedin.com/in/saurabhsejpal</organization>
             <organizationUrl>https://github.com/sejpalsaurabh</organizationUrl>
         </developer>

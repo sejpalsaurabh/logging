@@ -6,15 +6,15 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * This will be used to annotate methods to enable entry, exit and execution time logging.
+ * This annotation will be used to log all properties of POJO classes.
  *
- * @see <a href="https://github.com/sejpalsaurabh/logging#usage-1">EnableExecutionTimeLogger Usage</a>
+ * @see <a href="https://github.com/sejpalsaurabh/logging#usage-2">LogProperties Usage</a>
  *
  * @author Saurabh Sejpal
- * @since 0.0.1
+ * @since 0.0.2
  */
-@Target({ElementType.METHOD})
+@Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface EnableExecutionTimeLogger {
+public @interface LogProperties {
 
 }

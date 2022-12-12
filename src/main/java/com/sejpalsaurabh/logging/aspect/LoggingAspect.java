@@ -12,16 +12,22 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
 
+/**
+ * This class will be used as main aspect for logging library.
+ * @author Saurabh Sejpal
+ * @since 0.0.1
+ */
 @Aspect
 @Component
 public class LoggingAspect {
 
-  private static final String SEPARATOR = "-------------------------------------------------";
-  private static final String START_COMMON_LOGGER_STRING = "Starting execution for method {}() of {}.";
-  private static final String END_COMMON_LOGGER_STRING = "Completed execution for method {}() of {}.";
-
-
   private static final Logger logger = LoggerFactory.getLogger(LoggingAspect.class);
+
+  private final LoggerHelper helper;
+
+  public LoggingAspect(LoggerHelper helper) {
+    this.helper = helper;
+  }
 
   @Pointcut("@annotation(org.springframework.stereotype.Repository)"
     + " || @annotation(org.springframework.stereotype.Service)"
@@ -46,40 +52,32 @@ public class LoggingAspect {
     MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
     Logger classLogger = getClassLogger(methodSignature.getDeclaringType());
     final StopWatch timer = new StopWatch();
-    classLogger.info(START_COMMON_LOGGER_STRING, methodSignature.getName(),
-            methodSignature.getDeclaringType().getSimpleName());
+    helper.logStart(classLogger, methodSignature, joinPoint);
     timer.start();
     Object result = joinPoint.proceed();
     timer.stop();
-    classLogger.info("Execution for {}() of {} completed in {} ms.", methodSignature.getName(),
-            methodSignature.getDeclaringType().getSimpleName(),
-            timer.getTotalTimeMillis());
-    classLogger.info(END_COMMON_LOGGER_STRING, methodSignature.getName(),
-            methodSignature.getDeclaringType().getSimpleName());
+    helper.logEnd(classLogger, methodSignature, timer.getTotalTimeMillis());
+
     return result;
   }
 
   @Around("entryExitLogger()")
   public Object logEntryExitMethod(ProceedingJoinPoint joinPoint) throws Throwable {
+
     MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
     Logger classLogger = getClassLogger(methodSignature.getDeclaringType());
-    classLogger.info(START_COMMON_LOGGER_STRING, methodSignature.getName(),
-            methodSignature.getDeclaringType().getSimpleName());
+    helper.logStart(classLogger, methodSignature, joinPoint);
     Object result = joinPoint.proceed();
-    classLogger.info(END_COMMON_LOGGER_STRING, methodSignature.getName(),
-            methodSignature.getDeclaringType().getSimpleName());
+    helper.logEnd(classLogger, methodSignature);
 
     return result;
   }
 
   @AfterThrowing(pointcut = "executionTimeLogger() || springBeanPackagesPointcut() || entryExitLogger()",
-          throwing = "exception")
+      throwing = "exception")
   public void logException(JoinPoint joinPoint, Throwable exception) {
-    logger.error(SEPARATOR);
-    logger.error("Exception in the method {}() of {}", joinPoint.getSignature().getName(),
-            joinPoint.getSignature().getDeclaringTypeName());
-    logger.error("Message : {}", exception.getMessage());
-    logger.error(SEPARATOR);
+    Logger classLogger = getClassLogger(joinPoint.getSignature().getDeclaringType());
+    helper.logError(classLogger, joinPoint, exception);
   }
 
   private Logger getClassLogger(Class<?> executorClass) {
@@ -89,5 +87,6 @@ public class LoggingAspect {
       return logger;
     }
   }
+
 
 }
