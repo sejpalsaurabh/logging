@@ -9,11 +9,14 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
 
 /**
  * This class will be used as main aspect for logging library.
+ *
  * @author Saurabh Sejpal
  * @since 0.0.1
  */
@@ -30,8 +33,9 @@ public class LoggingAspect {
   }
 
   @Pointcut("@annotation(org.springframework.stereotype.Repository)"
-    + " || @annotation(org.springframework.stereotype.Service)"
-    + " || @annotation(org.springframework.web.bind.annotation.RestController)"
+      + " || @annotation(org.springframework.stereotype.Service)"
+      + " || @annotation(org.springframework.web.bind.annotation.RestController)"
+      + " || @annotation(org.springframework.stereotype.Component)"
   )
   public void springBeanPackagesPointcut() {
     //Empty Pointcut Method for Spring Bean Packages
@@ -47,6 +51,7 @@ public class LoggingAspect {
     //Empty Pointcut Method for @EnableEntryExitLogger
   }
 
+  @Order(value = Ordered.HIGHEST_PRECEDENCE + 1)
   @Around("executionTimeLogger()")
   public Object logMethodExecutionTime(ProceedingJoinPoint joinPoint) throws Throwable {
     MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
@@ -61,6 +66,7 @@ public class LoggingAspect {
     return result;
   }
 
+  @Order(value = Ordered.HIGHEST_PRECEDENCE + 2)
   @Around("entryExitLogger()")
   public Object logEntryExitMethod(ProceedingJoinPoint joinPoint) throws Throwable {
 
@@ -73,6 +79,7 @@ public class LoggingAspect {
     return result;
   }
 
+  @Order(value = Ordered.HIGHEST_PRECEDENCE)
   @AfterThrowing(pointcut = "executionTimeLogger() || springBeanPackagesPointcut() || entryExitLogger()",
       throwing = "exception")
   public void logException(JoinPoint joinPoint, Throwable exception) {

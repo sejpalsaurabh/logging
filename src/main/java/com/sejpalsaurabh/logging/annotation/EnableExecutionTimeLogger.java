@@ -8,9 +8,9 @@ import java.lang.annotation.Target;
 /**
  * This will be used to annotate methods to enable entry, exit and execution time logging.
  *
- * @see <a href="https://github.com/sejpalsaurabh/logging#usage-1">EnableExecutionTimeLogger Usage</a>
- *
  * @author Saurabh Sejpal
+ * @see <a href="https://github.com/sejpalsaurabh/logging#usage-1">EnableExecutionTimeLogger
+ * Usage</a>
  * @since 0.0.1
  */
 @Target({ElementType.METHOD})

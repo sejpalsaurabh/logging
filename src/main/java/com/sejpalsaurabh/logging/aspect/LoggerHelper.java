@@ -70,11 +70,14 @@ public class LoggerHelper {
       Object[] args = joinPoint.getArgs();
       StringBuilder log = new StringBuilder();
       for (int index = 0; index < args.length; index++) {
-        Class<?> clazz = args[index].getClass();
-        if (clazz.isAnnotationPresent(LogProperties.class)
-            && clazz.getDeclaredFields().length > 0) {
-          logArgumentForClass(clazz, args[index], classLogger, index, log, joinPoint);
+        if (args[index] != null) {
+          Class<?> clazz = args[index].getClass();
+          if (clazz.isAnnotationPresent(LogProperties.class)
+              && clazz.getDeclaredFields().length > 0) {
+            logArgumentForClass(clazz, args[index], classLogger, index, log, joinPoint);
+          }
         }
+
       }
       if (log.toString().length() > 0) {
         classLogger.debug(ARGUMENT_LOGGER_STRING, methodSignature.getName(),
