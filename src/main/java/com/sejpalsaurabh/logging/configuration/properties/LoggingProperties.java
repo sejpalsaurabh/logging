@@ -1,16 +1,13 @@
 package com.sejpalsaurabh.logging.configuration.properties;
 
+import com.sejpalsaurabh.logging.annotation.LogProperties;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
-
-import com.sejpalsaurabh.logging.annotation.LogProperties;
-
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 
 @Getter
 @Setter
@@ -28,8 +25,8 @@ public class LoggingProperties {
   public static class Common {
 
     /**
-     * This property will be used to enable/disable masking
-     * of below default fields in whole application.
+     * This property will be used to enable/disable masking of below default fields in whole
+     * application.
      *
      * @see LogProperties
      */
